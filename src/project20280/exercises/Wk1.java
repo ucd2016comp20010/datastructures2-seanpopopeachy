@@ -9,6 +9,8 @@ public class Wk1 {
 
         System.out.println(my_array);
 
+        // commit checker
+
         //double average = ...;
     }
     public static void main(String [] args) {
