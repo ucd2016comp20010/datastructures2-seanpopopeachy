@@ -62,7 +62,7 @@ public class DoublyLinkedList<E> implements List<E> {
     public E get(int i) {
         if (isEmpty()) return null;
         else if (i < size/2) {
-            Node<E> current = head;
+            Node<E> current = head.next;
 
             for (int j = 0; j < i; j++) {
                 current = current.next;
@@ -70,7 +70,7 @@ public class DoublyLinkedList<E> implements List<E> {
 
             return current.data;
         } else {
-            Node<E> current = tail;
+            Node<E> current = tail.prev;
 
             for (int j = 0; j < (size - 1 - i); j++) {
                 current = current.prev;
@@ -85,20 +85,20 @@ public class DoublyLinkedList<E> implements List<E> {
         Node<E> current;
         if (isEmpty()) return;
         else if (i < size/2) {
-            current = head;
+            current = head.next;
 
             for (int j = 0; j < i; j++) {
                 current = current.next;
             }
         } else {
-            current = tail;
+            current = tail.prev;
 
             for (int j = 0; j < (size - 1 - i); j++) {
                 current = current.prev;
             }
         }
 
-        Node<E> newNode = new Node<>(e, current.prev, current.next);
+        Node<E> newNode = new Node<>(e, current.prev, current);
         current.prev.next = newNode;
         current.prev = newNode;
 
@@ -110,13 +110,13 @@ public class DoublyLinkedList<E> implements List<E> {
         Node<E> current;
         if (isEmpty()) return null;
         else if (i < size/2) {
-            current = head;
+            current = head.next;
 
             for (int j = 0; j < i; j++) {
                 current = current.next;
             }
         } else {
-            current = tail;
+            current = tail.prev;
 
             for (int j = 0; j < (size - 1 - i); j++) {
                 current = current.prev;
