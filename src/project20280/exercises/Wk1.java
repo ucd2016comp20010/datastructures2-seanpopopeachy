@@ -15,14 +15,19 @@ public class Wk1 {
         }
     }
 
-    public static <E extends Comparable<E>> Node<E> sortedMerge(Node<E> l1, Node<E> l2) {
 
-//        Write a function which merges two sorted linked lists.
-//        l1 = {2, 6, 20, 24};
-//        l2 = {1, 3, 5, 8, 12, 19, 25};
-//
-//        result = l1. sortedMerge (l2);
-//        ( result = {1, 2, 3, 5, 6, 8, 12, 19, 20, 24, 25}; )
+
+    public static <E extends Comparable<E>> Node<E> sortedMerge(Node<E> l1, Node<E> l2) {
+    /* Q9 */
+    /*
+        Write a function which merges two sorted linked lists.
+
+        l1 = {2, 6, 20, 24};
+        l2 = {1, 3, 5, 8, 12, 19, 25};
+
+        result = l1. sortedMerge (l2);
+        ( result = {1, 2, 3, 5, 6, 8, 12, 19, 20, 24, 25}; )
+    */
 
         Node<E> dummy = new Node<>(null);
         Node<E> tail = dummy;
@@ -74,5 +79,22 @@ public class Wk1 {
 
         Node<Integer> result = sortedMerge(l1, l2);
         printList(result);
+    }
+
+    /* Q10 */
+
+    public void reverse() {
+        java.util.stream.Node prev = null;
+        java.util.stream.Node curr = head;
+        java.util.stream.Node next = null;
+
+        while(curr != null) {
+            next = curr.next;
+            currn.next = prev;
+            prev = curr;
+            curr = next;
+        }
+
+        head = prev;
     }
 }
