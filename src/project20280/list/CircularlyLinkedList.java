@@ -126,6 +126,12 @@ public class CircularlyLinkedList<E> implements List<E> {
         return size;
     }
 
+    public E first() {
+        if (isEmpty()) return null;
+        return tail.next.data;
+    }
+
+
     @Override
     public E removeFirst() {
         if (isEmpty()) {
