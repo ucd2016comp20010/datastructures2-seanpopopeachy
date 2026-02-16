@@ -1,5 +1,6 @@
 package project20280.tree;
 
+import project20280.tree.LinkedBinaryTree.Node;
 import project20280.interfaces.Entry;
 import project20280.interfaces.Position;
 
@@ -60,7 +61,15 @@ public class TreeMap<K, V> extends AbstractSortedMap<K, V> {
          * Relinks a parent node with its oriented child node.
          */
         private void relink(Node<Entry<K, V>> parent, Node<Entry<K, V>> child, boolean makeLeftChild) {
-            // TODO
+            if(child != null) {
+                child.setParent(parent);
+            }
+
+            if(makeLeftChild) {
+                parent.setLeft(child);
+            } else {
+                parent.setRight(child);
+            }
         }
 
         /**
@@ -78,7 +87,24 @@ public class TreeMap<K, V> extends AbstractSortedMap<K, V> {
          * Caller should ensure that p is not the root.
          */
         public void rotate(Position<Entry<K, V>> p) {
-            // TODO
+            Node<Entry<K, V>> x = validate(p);
+            Node<Entry<K, V>> y = x.getParent();
+            Node<Entry<K, V>> z = y.getParent();
+
+            if(z == null) {
+                root = x;
+                x.setParent(null);
+            } else {
+                relink(z, x, y == z.getLeft());
+            }
+
+            if(x == y.getLeft()) {
+                relink(y, x.getRight(), true);
+                relink(x, y, false);
+            } else {
+                relink(y, x.getLeft(), false);
+                relink(x, y, true);
+            }
         }
 
         /**
@@ -110,8 +136,17 @@ public class TreeMap<K, V> extends AbstractSortedMap<K, V> {
          * Caller should ensure that x has a grandparent.
          */
         public Position<Entry<K, V>> restructure(Position<Entry<K, V>> x) {
-            // TODO
-            return null;
+            Position<Entry<K, V>> y = parent(x);
+            Position<Entry<K, V>> z = parent(y);
+
+            if((x == right(y)) == (y == right(z))) {
+                rotate(y);
+                return y;
+            } else {
+                rotate(x);
+                rotate(x);
+                return x;
+            }
         }
     } // ----------- end of nested BalanceableBinaryTree class -----------
 
@@ -243,8 +278,19 @@ public class TreeMap<K, V> extends AbstractSortedMap<K, V> {
      * @return Position holding key, or last node reached during search
      */
     private Position<Entry<K, V>> treeSearch(Position<Entry<K, V>> p, K key) {
-        // TODO
-        return null;
+        if(isExternal(p)) {
+            return p;
+        }
+
+        int comp = compare(key, p.getElement().getKey());
+
+        if(comp == 0) {
+            return p;
+        } else if(comp < 0) {
+            return treeSearch(left(p), key);
+        } else {
+            return treeSearch(right(p), key);
+        }
     }
 
     /**
@@ -254,8 +300,13 @@ public class TreeMap<K, V> extends AbstractSortedMap<K, V> {
      * @return Position with minimal key in subtree
      */
     protected Position<Entry<K, V>> treeMin(Position<Entry<K, V>> p) {
-        // TODO
-        return null;
+        Position<Entry<K, V>> curr = p;
+
+        while(isInternal(curr)) {
+            curr = left(curr);
+        }
+
+        return parent(curr);
     }
 
     /**
@@ -265,8 +316,13 @@ public class TreeMap<K, V> extends AbstractSortedMap<K, V> {
      * @return Position with maximum key in subtree
      */
     protected Position<Entry<K, V>> treeMax(Position<Entry<K, V>> p) {
-        // TODO
-        return null;
+        Position<Entry<K, V>> curr = p;
+
+        while(isInternal(curr)) {
+            curr = right(curr);
+        }
+
+        return parent(curr);
     }
 
     /**
@@ -278,8 +334,17 @@ public class TreeMap<K, V> extends AbstractSortedMap<K, V> {
      */
     @Override
     public V get(K key) throws IllegalArgumentException {
-        // TODO
-        return null;
+        checkKey(key);
+
+        Position<Entry<K, V>> p = treeSearch(root(), key);
+
+        rebalanceAccess(p);
+
+        if(isExternal(p)) {
+            return null;
+        }
+
+        return p.getElement().getValue();
     }
 
     /**
